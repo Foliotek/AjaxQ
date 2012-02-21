@@ -1,6 +1,7 @@
 // AjaxQ jQuery Plugin
 // Copyright (c) 2012 Foliotek Inc.
 // MIT License
+// https://github.com/Foliotek/ajaxq
  
 (function($) {
 
