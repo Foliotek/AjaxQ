@@ -13,7 +13,7 @@ See http://foliotek.github.com/AjaxQ for a demonstration and documentation
 
     $.getq(name, opts);
     
-`$.postq` follows the [$.post](http://api.jquery.com/jQuery.get/) options and return value, with an extra first parameter (the queue name).
+`$.postq` follows the [$.post](http://api.jquery.com/jQuery.post/) options and return value, with an extra first parameter (the queue name).
 
     $.postq(name, opts);
     
