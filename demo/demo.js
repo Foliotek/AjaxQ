@@ -6,13 +6,25 @@ $(function() {
     var container1 = $("#q1-container");
     var currentIndex1 = 1;
     $(".q1").click(function() {
-        addRequest("queue1", $(this).data("delay"), container1, currentIndex1++, $(this).hasClass("btn-danger"));
+        if ($(this).hasClass("clear")) {
+            $.ajaxq.clear("queue1");
+            container1.find(".node:not('.beforesend')").slideUp("slow");
+        }
+        else {
+            addRequest("queue1", $(this).data("delay"), container1, currentIndex1++, $(this).hasClass("btn-danger"));
+        }
     });
     
     var container2 = $("#q2-container");
     var currentIndex2 = 1;
     $(".q2").click(function() {
-        addRequest("queue2", $(this).data("delay"), container2, currentIndex2++, $(this).hasClass("btn-danger"));
+        if ($(this).hasClass("clear")) {
+            $.ajaxq.clear("queue2");
+            container2.find(".node:not('.beforesend')").slideUp("slow");
+        }
+        else {
+            addRequest("queue2", $(this).data("delay"), container2, currentIndex2++, $(this).hasClass("btn-danger"));
+        }
     });
     
     $("#isQueueRunning").click(function() {

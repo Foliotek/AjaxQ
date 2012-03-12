@@ -6,6 +6,7 @@
 (function($) {
 
     var queues = {};
+    var currents = {};
     
     // Register an $.ajaxq function, which follows the $.ajax interface, but allows a queue name which will force only one request per queue to fire.
     $.ajaxq = function(qname, opts) {
@@ -37,6 +38,8 @@
             jqXHR.fail(function() {
                 deferred.reject.apply(this, arguments);
             });
+            
+            currents[qname] = jqXHR;
         });
         
         return promise;
@@ -56,6 +59,12 @@
         // Remove the next callback from the queue and fire it off.
         // If the queue was empty (this was the last item), delete it from memory so the next one can be instantly processed.
         function dequeue() {
+            if (currents[qname]) {
+                delete currents[qname];
+            }
+            if (!queues[qname]) {
+                return;
+            }
             var nextCallback = queues[qname].shift();
             if (nextCallback) {
                 nextCallback();
@@ -94,6 +103,15 @@
             }
         }
         return false;
+    };
+    
+    $.ajaxq.clear = function(qname) {
+        if (queues[qname]) {
+            delete queues[qname];
+        }
+        if (currents[qname]) {
+            currents[qname].abort();
+        }
     };
     
 })(jQuery);
