@@ -87,9 +87,13 @@
         };
     });
 
+    $.ajaxq.isQueueRunning = function(qname) {
+        return queues.hasOwnProperty(qname);
+    }
+
     $.ajaxq.isRunning = function() {
         for (var i in queues) {
-            if (queues.hasOwnProperty(i)) {
+            if ($.ajaxq.isQueueRunning(i)) {
                 return true;
             }
         }
