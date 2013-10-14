@@ -87,17 +87,20 @@
         };
     });
 
-    $.ajaxq.isQueueRunning = function(qname) {
+    isQueueRunning = function(qname) {
         return queues.hasOwnProperty(qname);
     }
 
-    $.ajaxq.isRunning = function() {
+    isAnyQueueRunning = function() {
         for (var i in queues) {
-            if ($.ajaxq.isQueueRunning(i)) {
-                return true;
-            }
+            if (checkIfQueueRunning(i)) return true;
         }
         return false;
+    }
+
+    $.ajaxq.isRunning = function(qname) {
+        if (qname) return isQueueRunning(qname);
+        else return isAnyQueueRunning();
     };
 
 })(jQuery);
