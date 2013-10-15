@@ -87,11 +87,11 @@
         };
     });
 
-    isQueueRunning = function(qname) {
+    var isQueueRunning = function(qname) {
         return queues.hasOwnProperty(qname);
     }
 
-    isAnyQueueRunning = function() {
+    var isAnyQueueRunning = function() {
         for (var i in queues) {
             if (checkIfQueueRunning(i)) return true;
         }
