@@ -93,7 +93,7 @@
 
     var isAnyQueueRunning = function() {
         for (var i in queues) {
-            if (checkIfQueueRunning(i)) return true;
+            if (isQueueRunning(i)) return true;
         }
         return false;
     }
