@@ -17,9 +17,13 @@ See http://foliotek.github.com/AjaxQ for a demonstration and documentation
 
     $.postq(name, opts);
     
-`$.ajaxq.isRunning` returns a boolean representing if any requests are currently running (in any queue.
+`$.ajaxq.isRunning` returns a boolean representing if any requests are currently running.  `qname is an optional parameter.
 
-    $.ajaxq.isRunning();
+    $.ajaxq.isRunning(qname);
+
+`$.ajaxq.clearQueue` removes any unprocessed requests from the queue.  `qname is an optional parameter.
+
+	$.ajaxq.clearQueue(qname);
     
 ## Demo
 
