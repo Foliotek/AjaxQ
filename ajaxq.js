@@ -56,6 +56,9 @@
         // Remove the next callback from the queue and fire it off.
         // If the queue was empty (this was the last item), delete it from memory so the next one can be instantly processed.
         function dequeue() {
+            if (!queues[qname]) {
+                return;
+            }
             var nextCallback = queues[qname].shift();
             if (nextCallback) {
                 nextCallback();
@@ -102,5 +105,20 @@
         if (qname) return isQueueRunning(qname);
         else return isAnyQueueRunning();
     };
-
+    
+    $.ajaxq.clear = function(qname) {
+        if (!qname) {
+            for (var i in queues) {
+                if (queues.hasOwnProperty(i)) {
+                    delete queues[i];
+                }
+            }
+        }
+        else {
+            if (queues[qname]) {
+                delete queues[qname];
+            }
+        }
+    };
+    
 })(jQuery);

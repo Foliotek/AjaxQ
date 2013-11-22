@@ -197,6 +197,17 @@
         $.ajaxq.isRunning(); // Will return <strong>false</strong> since request is finished.
     }
 </pre>
+
+        <h3>$.ajaxq.clear(qname)</h3>
+<pre>
+    // Aborts the current request, and clears the current queued items in the given queue.
+    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    
+    // Will cancel the current request and clear future ones.
+    $.ajaxq.clear("MyQueue"); 
+</pre>
         
         
         <h2><a name='demo'></a>Demo</h2>
@@ -213,9 +224,10 @@
                    <p> </p>
                   <p class='buttons'>
                     <button class='btn q1' data-delay='1'>Add 1 Second Request</button>
-                    <button class='btn q1' data-delay='3'>3 Seconds</button>
-                    <button class='btn q1' data-delay='8'>8 Seconds</button>
+                    <button class='btn q1' data-delay='3'>3 Sec</button>
+                    <button class='btn q1' data-delay='8'>8 Sec</button>
                     <button class='btn btn-danger q1' data-delay='1'>Error</button>
+                    <button class='btn q1 clear'>Clear</button>
                   </p>
                   
                     <div id='q1-container'>
@@ -227,9 +239,10 @@
                    <p></p>
                   <p class='buttons'>
                     <button class='btn q2' data-delay='1'>Add 1 Second Request</button>
-                    <button class='btn q2' data-delay='3'>3 Seconds</button>
-                    <button class='btn q2' data-delay='8'>8 Seconds</button>
+                    <button class='btn q2' data-delay='3'>3 Sec</button>
+                    <button class='btn q2' data-delay='8'>8 Sec</button>
                     <button class='btn btn-danger q2' data-delay='1'>Error</button>
+                    <button class='btn q2 clear'>Clear</button>
                   </p>
                     <div id='q2-container'>
                     
