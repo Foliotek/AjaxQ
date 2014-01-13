@@ -21,9 +21,9 @@ See http://foliotek.github.com/AjaxQ for a demonstration and documentation
 
     $.ajaxq.isRunning(qname);
 
-`$.ajaxq.clearQueue` removes any unprocessed requests from the queue.  `qname is an optional parameter.
+`$.ajaxq.clear` removes any unprocessed requests from the queue.  `qname is an optional parameter.
 
-	$.ajaxq.clearQueue(qname);
+	$.ajaxq.clear(qname);
     
 ## Demo
 
