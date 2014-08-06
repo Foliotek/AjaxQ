@@ -198,6 +198,18 @@
     }
 </pre>
 
+<h3>$.ajaxq.getActiveRequest(qname)</h3>
+<pre>
+    // Returns the currently processing <strong>jqXHR</strong> for the given queue
+    
+    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.ajaxq.isRunning(); // Will return <strong>true</strong> since request just started.
+    
+    function onsuccess() {
+        $.ajaxq.isRunning(); // Will return <strong>false</strong> since request is finished.
+    }
+</pre>
+
 <h3>$.ajaxq.clear(qname)</h3>
 <pre>
     // Clears queued requests in the given queue, without cancelling the current request
