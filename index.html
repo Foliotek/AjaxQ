@@ -198,15 +198,26 @@
     }
 </pre>
 
-        <h3>$.ajaxq.clear(qname)</h3>
+<h3>$.ajaxq.clear(qname)</h3>
 <pre>
-    // Aborts the current request, and clears the current queued items in the given queue.
+    // Clears queued requests in the given queue, without cancelling the current request
     $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
     $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
     $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
     
     // Will cancel the current request and clear future ones.
     $.ajaxq.clear("MyQueue"); 
+</pre>
+
+<h3>$.ajaxq.abort(qname)</h3>
+<pre>
+    // Aborts the current request, and clears the current queued items in the given queue.
+    $.postq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.postq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.postq ("MyQueue", 'path/to/another/resource', onsuccess);
+    
+    // Will cancel the current request and clear future ones.
+    $.ajaxq.abort("MyQueue"); 
 </pre>
         
         

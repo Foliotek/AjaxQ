@@ -24,6 +24,10 @@ See http://foliotek.github.com/AjaxQ for a demonstration and documentation
 `$.ajaxq.clear` removes any unprocessed requests from the queue.  `qname is an optional parameter.
 
 	$.ajaxq.clear(qname);
+
+`$.ajaxq.abort` Aborts the current request, and removes any unprocessed reqeusts from the queue.  `qname is required.
+
+  $.ajaxq.abort(qname);
     
 ## Demo
 
