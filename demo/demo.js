@@ -2,36 +2,23 @@ $(function() {
 
     $("body").removeClass("noscript");
 
+    $(".queue").on("click", ".btn", function(ev) {
+        var target = $(ev.target);
+        var container = target.closest(".queue").find(".queue-container");
+        var ix = container.data('qindex') || 1;
+        var qname = target.is('.q1') ? 'queue1' : 'queue2';
 
-    var container1 = $("#q1-container");
-    var currentIndex1 = 1;
-    $(".q1").click(function() {
-        if ($(this).is(".clear")) {
-            $.ajaxq.clear("queue1");
-            container1.find(".node:not('.beforesend')").slideUp("slow");
+        if (target.is('.clear')) {
+            $.ajaxq.clear(qname);
+            container.find(".node:not('.beforesend')").slideUp("slow");
         }
-        else if($(this).is('.abort')) {
-            $.ajaxq.abort("queue1");
-            container1.find(".node:not('.beforesend')").slideUp("slow");
+        else if(target.is('.abort')) {
+            $.ajaxq.abort(qname);
+            container.find(".node:not('.beforesend')").slideUp("slow");
         }
         else {
-            addRequest("queue1", $(this).data("delay"), container1, currentIndex1++, $(this).hasClass("btn-danger"));
-        }
-    });
-
-    var container2 = $("#q2-container");
-    var currentIndex2 = 1;
-    $(".q2").click(function() {
-        if ($(this).is(".clear")) {
-            $.ajaxq.clear("queue2");
-            container2.find(".node:not('.beforesend')").slideUp("slow");
-        }
-        else if($(this).is('.abort')) {
-            $.ajaxq.abort("queue2");
-            container2.find(".node:not('.beforesend')").slideUp("slow");
-        }
-        else {
-            addRequest("queue2", $(this).data("delay"), container2, currentIndex2++, $(this).hasClass("btn-danger"));
+            addRequest(qname, target.data("delay"), container, ix, target.is(".btn-danger"));
+            container.data('qindex', ix + 1);
         }
     });
 
