@@ -6,6 +6,7 @@
 (function($) {
 
     var queues = {};
+    var activeReqs = {};
 
     // Register an $.ajaxq function, which follows the $.ajax interface, but allows a queue name which will force only one request per queue to fire.
     $.ajaxq = function(qname, opts) {
@@ -25,7 +26,6 @@
         // Create a deep copy of the arguments, and enqueue this request.
         var clonedOptions = $.extend(true, {}, opts);
         enqueue(function() {
-
             // Send off the ajax request now that the item has been removed from the queue
             var jqXHR = $.ajax.apply(window, [clonedOptions]).always(dequeue);
 
@@ -37,16 +37,19 @@
             jqXHR.fail(function() {
                 deferred.reject.apply(this, arguments);
             });
+            return jqXHR;
         });
 
         return promise;
+
 
         // If there is no queue, create an empty one and instantly process this item.
         // Otherwise, just add this item onto it for later processing.
         function enqueue(cb) {
             if (!queues[qname]) {
                 queues[qname] = [];
-                cb();
+                var xhr = cb();
+                activeReqs[qname] = xhr;
             }
             else {
                 queues[qname].push(cb);
@@ -61,7 +64,8 @@
             }
             var nextCallback = queues[qname].shift();
             if (nextCallback) {
-                nextCallback();
+                var xhr = nextCallback();
+                activeReqs[qname] = xhr;
             }
             else {
                 delete queues[qname];
@@ -105,6 +109,20 @@
         if (qname) return isQueueRunning(qname);
         else return isAnyQueueRunning();
     };
+
+    $.ajaxq.getActiveRequest = function(qname) {
+        if (!qname) throw ("AjaxQ: queue name is required");
+
+        return activeReqs[qname];
+    };
+
+    $.ajaxq.abort = function(qname) {
+        if (!qname) throw ("AjaxQ: queue name is required");
+        
+        $.ajaxq.clear(qname);
+        var current = $.ajaxq.getActiveRequest(qname);
+        if (current) current.abort();
+    }
     
     $.ajaxq.clear = function(qname) {
         if (!qname) {

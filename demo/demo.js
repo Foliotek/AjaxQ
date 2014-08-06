@@ -6,8 +6,12 @@ $(function() {
     var container1 = $("#q1-container");
     var currentIndex1 = 1;
     $(".q1").click(function() {
-        if ($(this).hasClass("clear")) {
+        if ($(this).is(".clear")) {
             $.ajaxq.clear("queue1");
+            container1.find(".node:not('.beforesend')").slideUp("slow");
+        }
+        else if($(this).is('.abort')) {
+            $.ajaxq.abort("queue1");
             container1.find(".node:not('.beforesend')").slideUp("slow");
         }
         else {
@@ -18,8 +22,12 @@ $(function() {
     var container2 = $("#q2-container");
     var currentIndex2 = 1;
     $(".q2").click(function() {
-        if ($(this).hasClass("clear")) {
+        if ($(this).is(".clear")) {
             $.ajaxq.clear("queue2");
+            container2.find(".node:not('.beforesend')").slideUp("slow");
+        }
+        else if($(this).is('.abort')) {
+            $.ajaxq.abort("queue2");
             container2.find(".node:not('.beforesend')").slideUp("slow");
         }
         else {
