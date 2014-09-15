@@ -186,12 +186,14 @@
     $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
 </pre>
 
-        <h3>$.ajaxq.isRunning()</h3>
+        <h3>$.ajaxq.isRunning([qname])</h3>
 <pre>
-    // Returns <strong>boolean</strong> representing whether there are any requests running (in any queue).
+    // Returns <strong>boolean</strong> representing whether there are any requests running in any queue, or in the given queue, if provided
     
     $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
     $.ajaxq.isRunning(); // Will return <strong>true</strong> since request just started.
+
+    $.ajaxq.isRunning("NotMyQueue") // Will return <strong>false</strong> since the queue hasn't been added to.
     
     function onsuccess() {
         $.ajaxq.isRunning(); // Will return <strong>false</strong> since request is finished.
@@ -203,11 +205,8 @@
     // Returns the currently processing <strong>jqXHR</strong> for the given queue
     
     $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
-    $.ajaxq.isRunning(); // Will return <strong>true</strong> since request just started.
-    
-    function onsuccess() {
-        $.ajaxq.isRunning(); // Will return <strong>false</strong> since request is finished.
-    }
+    var xhr = $.ajaxq.getActiveRequest("MyQueue");
+    xhr.abort(); // will abort the current request
 </pre>
 
 <h3>$.ajaxq.clear(qname)</h3>
