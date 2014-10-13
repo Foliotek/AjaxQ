@@ -123,9 +123,9 @@
         if (!qname) throw ("AjaxQ: queue name is required");
         
         var current = $.ajaxq.getActiveRequest(qname);
-        if (current) current.abort();
         delete queues[qname];
         delete activeReqs[qname];
+        if (current) current.abort();
     };
 
     $.ajaxq.clear = function(qname) {
