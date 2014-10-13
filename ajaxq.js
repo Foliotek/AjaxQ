@@ -71,6 +71,7 @@
             }
             else {
                 delete queues[qname];
+                delete activeReqs[qname];
             }
         }
     };
@@ -98,14 +99,14 @@
 
     var isQueueRunning = function(qname) {
         return queues.hasOwnProperty(qname);
-    }
+    };
 
     var isAnyQueueRunning = function() {
         for (var i in queues) {
             if (isQueueRunning(i)) return true;
         }
         return false;
-    }
+    };
 
     $.ajaxq.isRunning = function(qname) {
         if (qname) return isQueueRunning(qname);
@@ -121,24 +122,25 @@
     $.ajaxq.abort = function(qname) {
         if (!qname) throw ("AjaxQ: queue name is required");
         
-        $.ajaxq.clear(qname);
         var current = $.ajaxq.getActiveRequest(qname);
         if (current) current.abort();
-    }
-    
+        delete queues[qname];
+        delete activeReqs[qname];
+    };
+
     $.ajaxq.clear = function(qname) {
         if (!qname) {
             for (var i in queues) {
                 if (queues.hasOwnProperty(i)) {
-                    delete queues[i];
+                    queues[i] = [];
                 }
             }
         }
         else {
             if (queues[qname]) {
-                delete queues[qname];
+                queues[qname] = [];
             }
         }
     };
-    
+
 })(jQuery);
