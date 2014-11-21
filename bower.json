@@ -4,7 +4,8 @@
   "version": "0.0.2",
   "homepage": "foliotek.github.io/AjaxQ",
   "authors": [
-    "Dustin Smith <thedustinsmith@gmail.com>"
+    "Dustin Smith <thedustinsmith@gmail.com>",
+    "Brian Grinstead <briangrinstead@gmail.com>"
   ],
   "description": "A jQuery plugin to perform sequential ajax requests.",
   "keywords": [
