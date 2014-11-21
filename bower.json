@@ -1,0 +1,24 @@
+{
+  "name": "ajaxq",
+  "main": "ajaxq.js",
+  "version": "0.0.1",
+  "homepage": "foliotek.github.io/AjaxQ",
+  "authors": [
+    "Dustin Smith <thedustinsmith@gmail.com>"
+  ],
+  "description": "A jQuery plugin to perform sequential ajax requests.",
+  "keywords": [
+    "ajaxq",
+    "ajax",
+    "queue"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "demo"
+  ],
+  "dependencies": {
+    "jquery": ">1.6"
+  }
+}
