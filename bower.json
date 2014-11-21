@@ -1,7 +1,7 @@
 {
   "name": "ajaxq",
   "main": "ajaxq.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "foliotek.github.io/AjaxQ",
   "authors": [
     "Dustin Smith <thedustinsmith@gmail.com>"
@@ -16,7 +16,8 @@
   "ignore": [
     "**/.*",
     "bower_components",
-    "demo"
+    "demo",
+    "index.html"
   ],
   "dependencies": {
     "jquery": ">1.6"
