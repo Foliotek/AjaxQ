@@ -9,6 +9,7 @@
     var activeReqs = {};
 
     // Register an $.ajaxq function, which follows the $.ajax interface, but allows a queue name which will force only one request per queue to fire.
+    // opts can be the regular $.ajax settings plainObject, or a callback returning the settings object, to be evaluated just prior to the actual call to $.ajax.
     $.ajaxq = function(qname, opts) {
 
         if (typeof opts === "undefined") {
@@ -23,11 +24,13 @@
         promise.error = promise.fail;
         promise.complete = promise.always;
 
+        // Check whether options are to be evaluated at call time or not.
+        var deferredOpts = typeof opts === 'function';
         // Create a deep copy of the arguments, and enqueue this request.
-        var clonedOptions = $.extend(true, {}, opts);
+        var clonedOptions = !deferredOpts ? $.extend(true, {}, opts) : null;
         enqueue(function() {
             // Send off the ajax request now that the item has been removed from the queue
-            var jqXHR = $.ajax.apply(window, [clonedOptions]);
+            var jqXHR = $.ajax.apply(window, [deferredOpts ? opts() : clonedOptions]);
 
             // Notify the returned deferred object with the correct context when the jqXHR is done or fails
             // Note that 'always' will automatically be fired once one of these are called: http://api.jquery.com/category/deferred-object/.
