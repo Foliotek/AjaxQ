@@ -179,6 +179,21 @@
         dataType: "jsonp"
     });
 </pre>
+<h3>$.ajaxq([qname], [function opts])</h3>
+<pre>
+    // Provide a function to be executed at dequeue to retrieve options
+    var data = {
+      foo: 'bar'
+    };
+    function getOpts() {
+      return {
+          url: 'path/to/your/resource',
+          type: 'post',
+          data: data
+      };
+    }
+    $.ajaxq ("MyQueue", getOpts);
+</pre>
         <h3>$.postq</h3>
 <pre>
     // See full <a href='http://api.jquery.com/jQuery.post/'>$.post documentation</a> documentation.
