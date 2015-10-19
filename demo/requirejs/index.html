@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>AjaxQ jQuery Plugin</title>
+    <meta name="description" content="AjaxQ jQuery Plugin - a tiny, simple jQuery plugin for sequential ajax requests.">
+    <meta name="author" content="Foliotek, Inc.">
+
+    <link href="../bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding: 0;
+        font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", sans-serif;
+      }
+      .container {
+        border: solid 3px #ccc;
+        border-top:none;
+        border-bottom:none;
+        padding: 15px 20px;
+        padding-bottom: 50px;
+        -moz-box-shadow: 0 10px 20px #aaaaaa;
+        -webkit-box-shadow: 0 10px 20px #aaaaaa;
+        box-shadow: 0 10px 20px #aaaaaa;
+      }
+      body.noscript .scriptload {
+        display: none;
+      }
+      h1 {
+        font-size: 50px;
+        line-height: 70px;
+      }
+      h2 {
+        margin: 20px 0;
+        margin-top: 40px;
+        color: #131;
+        border: solid 1px;
+        border-left: none;
+        border-right:none;
+        padding: 3px;
+        letter-spacing: .1em;
+      }
+      p, li {
+        font-family: Constantia, "Lucida Bright", Lucidabright, "Lucida Serif", Lucida, Georgia, serif;
+        font-size: 14px;
+        line-height: 1.8;
+      }
+      .container > h3 {
+        margin: 10px;
+        color: #282;
+      }
+      .container > pre {
+        margin-left: 30px;
+        margin-bottom: 20px;
+      }
+      .queue {
+        text-align: center;
+        background: #fafafa;
+      }
+      .queue h3 {
+        text-decoration: underline;
+      }
+
+      .queue .buttons {
+        border: solid 2px #ddd;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .node {
+        height: 40px;
+        line-height:40px;
+        opacity: .3;
+        width: 80%;
+        border-radius: 5px;
+        margin: 3px auto;
+        text-align: center;
+        position:relative;
+      }
+      .node strong {
+        position:absolute;
+        top:0;
+        left:6px;
+      }
+      .node b {
+        position:absolute;
+        left:30px;
+        top:0;
+        color:red;
+      }
+      .node i {
+        position:absolute;
+        top:0;
+        right:30px;
+      }
+      .node.beforesend b {
+        color: yellow;
+      }
+      .node.complete b {
+        color: green;
+      }
+      .node.error.complete b {
+        color: red;
+      }
+      .node.beforesend {
+        opacity: .6;
+      }
+      .node.complete {
+        opacity: 1;
+      }
+
+      #q1-container .node.error, #q2-container .node.error  {
+        background: #f99;
+      }
+
+      #q1-container .node {
+        background: #9fd;
+      }
+      #q2-container .node {
+        background: #99d;
+      }
+
+      .btn-large {
+        font-size: 20px;
+        font-weight: normal;
+        padding: 14px 24px;
+        margin-right: 10px;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+      }
+
+      .center {
+        margin: 20px 10px;
+        text-align: center;
+        background: #465F46;
+        border: solid 1px;
+        border-radius: 5px;
+        padding: 20px 10px;
+      }
+    </style>
+  </head>
+
+  <body class='noscript'>
+
+    <div class="container">
+
+        <h1>AjaxQ jQuery Plugin</h1>
+        <p>
+        A tiny, simple jQuery plugin for <strong>sequential ajax requests</strong>.
+        </p>
+        <h2>Features</h2>
+        <ul>
+            <li><strong>Tiny</strong>.  AjaxQ weighs in at <code>600 bytes</code> minified and gzipped.</li>
+            <li><strong>Simple</strong>.  Less code means that less can go wrong.  <a href='http://github.com/Foliotek/AjaxQ/blob/master/ajaxq.js'>Take a look</a> at the JavaScript.</li>
+            <li><strong>Consistent</strong>.  AjaxQ returns a <code>promise</code> that matches the return type of the <a href='http://api.jquery.com/jQuery.ajax/'>$.ajax</a> API.</li>
+        </ul>
+        <h2>Installation</h2>
+        <p class='center'>
+            <a class='btn btn-large' href='http://github.com/Foliotek/ajaxq'>View Project On Github</a>
+            <a class='btn btn-large' href='https://raw.githubusercontent.com/Foliotek/AjaxQ/v0.0.2/ajaxq.js'>Just the JavaScript, Please</a>
+        </p>
+
+        <p>Or using bower</p>
+        <pre>bower install ajaxq</pre>
+
+        <h2>Usage</h2>
+        <p>Using AjaxQ is easy.  Add the plugin into your project, then instead of calling <code>$.ajax(opts);</code> call <code>$.ajaxq(name, opts);</code></p>
+        <p>
+        Any requests added with the same queue name will be processed <strong>sequentially</strong>.
+        It is possible to have more than one queue running in <strong>parallel</strong> by using different queue names.
+        See the <a href='#demo'>demo</a> below to see two queues running together at the same time.
+        </p>
+
+        <h3>$.ajaxq</h3>
+<pre>
+    // See full <a href='http://api.jquery.com/jQuery.ajax/'>$.ajax documentation</a>.  The only difference is the first parameter (the queue name).
+    $.ajaxq ("MyQueue", {
+        url: 'http://jsfiddle.net/echo/jsonp/',
+        type: 'post',
+        dataType: "jsonp"
+    });
+</pre>
+<h3>$.ajaxq([qname], [function opts])</h3>
+<pre>
+    // Provide a function to be executed at dequeue to retrieve options
+    var data = {
+      foo: 'bar'
+    };
+    function getOpts() {
+      return {
+          url: 'path/to/your/resource',
+          type: 'post',
+          data: data
+      };
+    }
+    $.ajaxq ("MyQueue", getOpts);
+</pre>
+        <h3>$.postq</h3>
+<pre>
+    // See full <a href='http://api.jquery.com/jQuery.post/'>$.post documentation</a> documentation.
+    $.postq ("MyQueue", 'path/to/your/resource', onsuccess);
+</pre>
+        <h3>$.getq</h3>
+<pre>
+    // See full <a href='http://api.jquery.com/jQuery.get/'>$.get documentation</a> documentation.
+    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+</pre>
+
+        <h3>$.ajaxq.isRunning([qname])</h3>
+<pre>
+    // Returns <strong>boolean</strong> representing whether there are any requests running in any queue, or in the given queue, if provided
+
+    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.ajaxq.isRunning(); // Will return <strong>true</strong> since request just started.
+
+    $.ajaxq.isRunning("NotMyQueue") // Will return <strong>false</strong> since the queue hasn't been added to.
+
+    function onsuccess() {
+        $.ajaxq.isRunning(); // Will return <strong>false</strong> since request is finished.
+    }
+</pre>
+
+<h3>$.ajaxq.getActiveRequest(qname)</h3>
+<pre>
+    // Returns the currently processing <strong>jqXHR</strong> for the given queue
+
+    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    var xhr = $.ajaxq.getActiveRequest("MyQueue");
+    xhr.abort(); // will abort the current request
+</pre>
+
+<h3>$.ajaxq.clear(qname)</h3>
+<pre>
+    // Clears queued requests in the given queue, without cancelling the current request
+    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+
+    // Will clear future requests without cancelling the current one
+    $.ajaxq.clear("MyQueue");
+</pre>
+
+<h3>$.ajaxq.abort(qname)</h3>
+<pre>
+    // Aborts the current request, and clears the current queued items in the given queue
+    $.postq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.postq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.postq ("MyQueue", 'path/to/another/resource', onsuccess);
+
+    // Will cancel the current request and clear future ones
+    $.ajaxq.abort("MyQueue");
+</pre>
+
+
+        <h2><a name='demo'></a>Demo</h2>
+        <p>Click the buttons below to add requests onto two separate queues.  Requests for this demo are generated using the <a href='http://doc.jsfiddle.net/use/echo.html'>jsFiddle echo API</a>.</p>
+
+        <hr />
+
+        <div class='scriptload'>
+
+            <div class="row">
+
+                <div class="span6 queue">
+                  <h3>Queue #1</h3>
+                   <p> </p>
+                  <p class='buttons'>
+                    <button class='btn q1' data-delay='1'>Add 1 Sec Request</button>
+                    <button class='btn q1' data-delay='3'>3 Sec</button>
+                    <button class='btn q1' data-delay='8'>8 Sec</button>
+                    <button class='btn btn-danger q1' data-delay='1'>Error</button>
+                    <button class='btn q1 clear'>Clear</button>
+                    <button class='btn q1 abort'>Abort</button>
+                  </p>
+
+                  <div class="queue-container" id='q1-container'>
+
+                  </div>
+                </div>
+                <div class="span6 queue">
+                  <h3>Queue #2</h3>
+                   <p></p>
+                  <p class='buttons'>
+                    <button class='btn q2' data-delay='1'>Add 1 Sec Request</button>
+                    <button class='btn q2' data-delay='3'>3 Sec</button>
+                    <button class='btn q2' data-delay='8'>8 Sec</button>
+                    <button class='btn btn-danger q2' data-delay='1'>Error</button>
+                    <button class='btn q2 clear'>Clear</button>
+                    <button class='btn q2 abort'>Abort</button>
+                  </p>
+                    <div class="queue-container" id='q2-container'>
+
+                    </div>
+               </div>
+            </div>
+
+            <hr />
+            <div class='row'>
+                <div class='span12'>
+                    <button class='btn' id='isQueueRunning'>Are Any Requests Running?</button>
+                    <strong id='isQueueRunningLabel'></strong>
+                </div>
+            </div>
+        </div>
+
+        <h2>About</h2>
+        <p>
+            AjaxQ was developed by <a href='http://www.foliotek.com'>Foliotek, Inc.</a> for use in <a href='http://presentation.foliotek.com'>Foliotek Presentation</a>.
+            It is licensed under the MIT License.  See the <a href='http://github.com/Foliotek/ajaxq/LICENSE'>LICENSE</a> file.
+        </p>
+        <p>
+            You can find some more of our code and projects on our <a href='http://foliotek.com/devblog'>development blog</a>.
+        </p>
+    </div>
+
+    <script  src='require.js'></script>
+    <script>
+      require.config({
+          paths: {
+              // the left side is the module ID,
+              // the right side is the path to
+              // the jQuery file, relative to baseUrl.
+              // Also, the path should NOT include
+              // the '.js' file extension. This example
+              // is using jQuery 1.9.0 located at
+              // js/lib/jquery-1.9.0.js, relative to
+              // the HTML page.
+              jquery: '../jquery-1.10.2.min',
+              ajaxq: '../../ajaxq'
+          }
+      });
+
+      require(['app']);
+    </script>
+  </body>
+</html>
