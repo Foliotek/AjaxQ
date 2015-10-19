@@ -1,13 +1,19 @@
 (function () {
   'use strict';
+  var oldExpect = window.expect;
+  var expect = function(v) {
+    return oldExpect(v);
+  };
 
   describe('AjaxQ', function () {
+    var xhr 
     beforeEach(function() {
-        this.xhr = sinon.useFakeXMLHttpRequest();
+        var self = this;
+        self.xhr = sinon.useFakeXMLHttpRequest();
 
-        this.requests = [];
-        this.xhr.onCreate = function(xhr) {
-            this.requests.push(xhr);
+        self.requests = [];
+        self.xhr.onCreate = function(xhr) {
+            self.requests.push(xhr);
         }.bind(this);
     });
 
@@ -84,39 +90,43 @@
     });
 
     describe('Test low level methods', function () {
+
       describe('$.ajaxq.isRunning', function () {
+
         it('should return true if any request running', function () {
-          var resp = {
-            id: 1
-          };
-          $.ajaxq ('test-queue',{
+          var self = this,
+              resp = {
+                id: 1
+              };
+          $.ajaxq ('test-isrunning-queue', {
                    url: 'http://example.com',
                    type: 'post'
           });
-          expect($.ajaxq.isRunning()).to.be.Ok;
-          expect($.ajaxq.isRunning('test-queue')).to.be.Ok;
-          this.requests[0].respond(200, { "Content-Type": "application/json" },
-                                   JSON.stringify(resp));
+          expect($.ajaxq.isRunning()).to.be.ok;
+          expect($.ajaxq.isRunning('test-isrunning-queue')).to.be.ok;
+          self.requests[0].respond(200, { "Content-Type": "application/json" }, JSON.stringify(resp));
         });
 
         it('should return false if no request running', function (done) {
           var resp = {
             id: 1
           };
-          $.ajaxq ('test-queue',{
-                   url: 'http://example.com',
+          var first = $.ajaxq ('test-isrunning-queue',{
+                   url: 'http://example22.com',
                    type: 'post'
-          })
-          .then(function () {
-            expect($.ajaxq.isRunning()).to.be.not.Ok;
-            done();
+          });
+          first.done(function () {
+            setTimeout(function () {
+              expect($.ajaxq.isRunning('test-isrunning-queue')).to.be.not.ok;
+              done();
+            }, 1)
           });
           this.requests[0].respond(200, { "Content-Type": "application/json" },
                                    JSON.stringify(resp));
         });
 
         it('should return false if queue is not added', function () {
-          expect($.ajaxq.isRunning('test-nonexistent-queue')).to.be.not.Ok;
+          expect($.ajaxq.isRunning('test-nonexistent-queue')).to.be.not.ok;
         });
       });
 
@@ -148,14 +158,46 @@
           expect($.ajaxq.abort).to.throw('AjaxQ: queue name is required');
         });
 
-        xit('should resolve promise upon queue abort', function () {
+        it('should not resolve promise and queue should be empty', function () {
+          var firstXhr = $.ajaxq('test-abort-queue', { 
+                            url: 'http://example.com',
+                            type: 'post'
+          });
+          var secondXhr = $.ajaxq('test-abort-queue', {
+                                url: 'http://example.com',
+                                type: 'post'
+          });
 
+          var cb = chai.spy();
+          firstXhr.done(cb);
+
+          $.ajaxq.abort('test-abort-queue');
+          expect(this.requests[0].readyState).to.be.equal(0);
+          expect(cb).to.not.have.been.called();
         });
       });
 
       describe('$.ajaxq.clear', function () {
-        xit('should resolve promise upon queue cleared', function () {
+        it('should resolve promise upon queue cleared and next request not executed', function (done) {
 
+          var firstXhr = $.ajaxq('test-clear-queue', { 
+                                url: 'http://example.com',
+                                type: 'post'
+          });
+          var secondXhr = $.ajaxq('test-clear-queue', {
+                                url: 'http://example.com',
+                                type: 'post'
+          });
+
+          $.ajaxq.clear('test-clear-queue');
+          firstXhr.done(function () {
+              setTimeout(function(){
+                  expect($.ajaxq.isRunning('test-clear-queue')).to.not.be.ok;
+                  done();
+              }, 1);
+          });
+
+          this.requests[0].respond(200, { "Content-Type": "application/json" }, JSON.stringify({}));
         });
       });
     });

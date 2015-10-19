@@ -112,7 +112,7 @@
     });
 
     var isQueueRunning = function(qname) {
-        return queues.hasOwnProperty(qname) && queues[qname].length > 0;
+        return (queues.hasOwnProperty(qname) && queues[qname].length > 0) || activeReqs.hasOwnProperty(qname);
     };
 
     var isAnyQueueRunning = function() {
