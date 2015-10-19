@@ -5,6 +5,7 @@
     <title>AjaxQ jQuery Plugin</title>
     <meta name="description" content="AjaxQ jQuery Plugin - a tiny, simple jQuery plugin for sequential ajax requests.">
     <meta name="author" content="Foliotek, Inc.">
+    <link rel="icon" href="//foliotek.github.io/favico-64.png">
 
     <link href="demo/bootstrap.css" rel="stylesheet">
     <style>
@@ -173,10 +174,10 @@
         <h3>$.ajaxq</h3>
 <pre>
     // See full <a href='http://api.jquery.com/jQuery.ajax/'>$.ajax documentation</a>.  The only difference is the first parameter (the queue name).
-    $.ajaxq ("MyQueue", {
+    $.ajaxq ('MyQueue', {
         url: 'http://jsfiddle.net/echo/jsonp/',
         type: 'post',
-        dataType: "jsonp"
+        dataType: 'jsonp'
     });
 </pre>
 <h3>$.ajaxq([qname], [function opts])</h3>
@@ -192,27 +193,27 @@
           data: data
       };
     }
-    $.ajaxq ("MyQueue", getOpts);
+    $.ajaxq ('MyQueue', getOpts);
 </pre>
         <h3>$.postq</h3>
 <pre>
     // See full <a href='http://api.jquery.com/jQuery.post/'>$.post documentation</a> documentation.
-    $.postq ("MyQueue", 'path/to/your/resource', onsuccess);
+    $.postq ('MyQueue', 'path/to/your/resource', onsuccess);
 </pre>
         <h3>$.getq</h3>
 <pre>
     // See full <a href='http://api.jquery.com/jQuery.get/'>$.get documentation</a> documentation.
-    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.getq ('MyQueue', 'path/to/another/resource', onsuccess);
 </pre>
 
         <h3>$.ajaxq.isRunning([qname])</h3>
 <pre>
     // Returns <strong>boolean</strong> representing whether there are any requests running in any queue, or in the given queue, if provided
     
-    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.getq ('MyQueue', 'path/to/another/resource', onsuccess);
     $.ajaxq.isRunning(); // Will return <strong>true</strong> since request just started.
 
-    $.ajaxq.isRunning("NotMyQueue") // Will return <strong>false</strong> since the queue hasn't been added to.
+    $.ajaxq.isRunning('NotMyQueue') // Will return <strong>false</strong> since the queue hasn't been added to.
     
     function onsuccess() {
         $.ajaxq.isRunning(); // Will return <strong>false</strong> since request is finished.
@@ -223,31 +224,31 @@
 <pre>
     // Returns the currently processing <strong>jqXHR</strong> for the given queue
     
-    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
-    var xhr = $.ajaxq.getActiveRequest("MyQueue");
+    $.getq ('MyQueue', 'path/to/another/resource', onsuccess);
+    var xhr = $.ajaxq.getActiveRequest('MyQueue');
     xhr.abort(); // will abort the current request
 </pre>
 
 <h3>$.ajaxq.clear(qname)</h3>
 <pre>
     // Clears queued requests in the given queue, without cancelling the current request
-    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
-    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
-    $.getq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.getq ('MyQueue', 'path/to/another/resource', onsuccess);
+    $.getq ('MyQueue', 'path/to/another/resource', onsuccess);
+    $.getq ('MyQueue', 'path/to/another/resource', onsuccess);
     
     // Will clear future requests without cancelling the current one
-    $.ajaxq.clear("MyQueue"); 
+    $.ajaxq.clear('MyQueue'); 
 </pre>
 
 <h3>$.ajaxq.abort(qname)</h3>
 <pre>
     // Aborts the current request, and clears the current queued items in the given queue
-    $.postq ("MyQueue", 'path/to/another/resource', onsuccess);
-    $.postq ("MyQueue", 'path/to/another/resource', onsuccess);
-    $.postq ("MyQueue", 'path/to/another/resource', onsuccess);
+    $.postq ('MyQueue', 'path/to/another/resource', onsuccess);
+    $.postq ('MyQueue', 'path/to/another/resource', onsuccess);
+    $.postq ('MyQueue', 'path/to/another/resource', onsuccess);
     
     // Will cancel the current request and clear future ones
-    $.ajaxq.abort("MyQueue"); 
+    $.ajaxq.abort('MyQueue'); 
 </pre>
         
         
@@ -301,7 +302,12 @@
                 </div>
             </div>
         </div>
-        
+
+        <h2><a name="tests"></a>Tests</h2>
+        <p>
+          <a href="/test/">Mocha Tests</a>
+        </p>
+
         <h2>About</h2>
         <p>
             AjaxQ was developed by <a href='http://www.foliotek.com'>Foliotek, Inc.</a> for use in <a href='http://presentation.foliotek.com'>Foliotek Presentation</a>.  

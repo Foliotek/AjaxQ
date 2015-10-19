@@ -53,6 +53,7 @@
             });
 
             jqXHR.always(dequeue); // make sure to dequeue the next request AFTER the done and fail callbacks are fired
+
             return jqXHR;
         });
 
