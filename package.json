@@ -1,0 +1,28 @@
+{
+  "name": "ajaxq",
+  "version": "0.0.7",
+  "description": "A jQuery plugin to perform sequential ajax requests.",
+  "main": "ajaxq.js",
+  "authors": [
+    "Dustin Smith <thedustinsmith@gmail.com>",
+    "Brian Grinstead <briangrinstead@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Foliotek/AjaxQ.git"
+  },
+  "keywords": [
+    "jquery",
+    "ajax",
+    "queue",
+    "ajaxq"
+  ],
+  "files": [
+    "ajaxq.js"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Foliotek/AjaxQ/issues"
+  },
+  "homepage": "https://github.com/Foliotek/AjaxQ#readme"
+}
