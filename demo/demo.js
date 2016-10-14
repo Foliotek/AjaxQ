@@ -56,7 +56,7 @@ function addRequest(name, delay, container, num, error) {
 
 
     var jqXHR = $.ajaxq (name, {
-        url: 'http://jsfiddle.net/echo/jsonp/',
+        url: 'https://jsfiddle.net/echo/jsonp/',
         type: 'post',
         dataType: error ? "" : "jsonp",
         data: {
